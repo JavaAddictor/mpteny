@@ -27,13 +27,13 @@ public class NettyClient {
                          socketChannel.pipeline().addLast(new ObjectEncoder());
                          socketChannel.pipeline().addLast(new ObjectDecoder(Integer.MAX_VALUE,
                                  ClassResolvers.cacheDisabled(this.getClass().getClassLoader())));
-                         socketChannel.pipeline().addLast(new MyInHandler());
+                         socketChannel.pipeline().addLast(new MyDirectChannelInHandler());
 
                      }
                  });
 
         try {
-            ChannelFuture sync = bootstrap.connect("localhost", 8080);
+            ChannelFuture sync = bootstrap.connect("localhost", 8081);
             sync.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();

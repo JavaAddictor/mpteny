@@ -24,12 +24,12 @@ public class NettyServer {
         ServerBootstrap serverBootstrap = new ServerBootstrap();
 
         serverBootstrap.group(boss,work)
-                       .channel(NioServerSocketChannel.class)
-                       .option(ChannelOption.SO_BACKLOG,1024) //相当于NIO的父通道ServerSocketChannel
-                       .childHandler(new ChildChannel()); //相当于NIO的子通道SocketChannel
+                       .channel(NioServerSocketChannel.class)//相当于NIO的父通道ServerSocketChannel
+                       .option(ChannelOption.SO_BACKLOG,1024) //最大连接数
+                       .childHandler(new ChildChannel());//消息处理器
 
         try {
-            ChannelFuture sync = serverBootstrap.bind(8080).sync();
+            ChannelFuture sync = serverBootstrap.bind(8081).sync();
             sync.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -38,6 +38,11 @@ public class NettyServer {
             work.shutdownGracefully();
         }
     }
+
+    public NettyServer() {
+
+    }
+
 
     private static class ChildChannel extends ChannelInitializer<SocketChannel> {
         @Override
@@ -58,7 +63,6 @@ public class NettyServer {
                 System.out.println(new String(bytes, "utf-8"));
                 /*ByteBuf byteBuf = Unpooled.copiedBuffer("a message from netty server".getBytes());
                 channelHandlerContext.writeAndFlush(byteBuf);*/
-
             }
 
             @Override
