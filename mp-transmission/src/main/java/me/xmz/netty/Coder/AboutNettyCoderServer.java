@@ -9,6 +9,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import io.netty.handler.codec.FixedLengthFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
 
 public class AboutNettyCoderServer {
@@ -58,7 +59,10 @@ public class AboutNettyCoderServer {
     }
 
     public static void main(String[] args) {
-        ByteBuf byteBuf = Unpooled.copiedBuffer(delimiter.getBytes());
-        new AboutNettyCoderServer(new DelimiterBasedFrameDecoder(1024, byteBuf));
+        //DelimiterBasedFrameDecoder
+       /* ByteBuf byteBuf = Unpooled.copiedBuffer(delimiter.getBytes());
+        new AboutNettyCoderServer(new DelimiterBasedFrameDecoder(1024, byteBuf));*/
+       //FixedLengthFrameDecoder
+        new AboutNettyCoderServer(new FixedLengthFrameDecoder(10));
     }
 }
